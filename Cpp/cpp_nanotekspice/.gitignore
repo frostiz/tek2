@@ -1,0 +1,7 @@
+CMakeFiles/
+CMakeCache.txt
+.idea/
+cpp_nanotekspice.cbp
+cmake_install.cmake
+CMakeLists.txt
+Makefile

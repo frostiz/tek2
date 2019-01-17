@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+
+import sys
+import shutil
+
+def add_packet(packet_name):
+	print("add packet %s" % packet_name)
+	create_file(packet_name)
+	add_define(packet_name)
+	add_prototype(packet_name)
+	add_makefile(packet_name)
+
+def create_file(packet_name):
+	file = open("./src/packet/incoming/" + packet_name.lower() + ".c", "w")
+
+	file.write("/*\n"
+		   "** EPITECH PROJECT, 2018\n"
+		   "** PSU_zappy_2017\n"
+		   "** File description:\n"
+		   "** " + packet_name.lower() + " command\n"
+		   "*/\n\n"
+		   "#include \"packet_manager.h\"\n\n"
+		   "void	" + packet_name.lower() + "_command(t_client *client, t_zappy_packet packet)\n"
+		   "{\n"
+		   "	(void) packet;\n\n"
+		   "}")
+	file.close()
+
+def add_define(packet_name):
+	temp = open('temp', 'w')
+	with open('./include/packet_manager.h', 'r') as f:
+		data = f.readlines()
+		i = 1
+		for line in data:
+			if line.startswith('typedef void handler'):
+				data[i - 2] = "#define " + packet_name.upper() + " \"" + packet_name + "\"" + "\n\n"
+			i += 1
+		temp.writelines(data)
+	temp.close()
+	shutil.move('temp', './include/packet_manager.h')
+
+def add_prototype(packet_name):
+	temp = open('temp', 'w')
+	with open('./include/packet_manager.h', 'r') as f:
+		data = f.readlines()
+		i = 1
+		for line in data:
+			if line.startswith('#endif'):
+				data[i - 2] = "void	" + packet_name.lower() + "_command(t_client *client, t_zappy_packet packet);\n\n"
+			i += 1
+		temp.writelines(data)
+	temp.close()
+	shutil.move('temp', './include/packet_manager.h')
+
+def add_makefile(packet_name):
+	temp = open('temp', 'w')
+	with open('./Makefile', 'r') as f:
+		data = f.readlines()
+		i = 1
+		for line in data:
+			if line.startswith('OBJ	=	$(SRC:.c=.o)'):
+				data[i - 2] = "		src/packet/incoming/" + packet_name.lower() + ".c				\\\n\n"
+			i += 1
+		temp.writelines(data)
+	temp.close()
+	shutil.move('temp', './Makefile')
+
+if (len(sys.argv) == 2 and sys.argv[1]):
+	add_packet(sys.argv[1])
+else:
+	print ("Error: not enough arguments")
+	exit(84)

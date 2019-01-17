@@ -1,0 +1,9 @@
+# Source #
+*.o
+
+# CLION INFOS #
+*.xml
+*.txt
+*.iml
+cmake-build-debug/*
+.idea/fileTemplates/*

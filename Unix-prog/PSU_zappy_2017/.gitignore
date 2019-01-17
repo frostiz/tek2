@@ -1,0 +1,14 @@
+# Source #
+*.o
+
+# CLION INFOS #
+*.xml
+*.txt
+*.iml
+*~
+.idea/*
+cmake-build-debug/*
+
+# Others #
+*.rb
+*.sh
